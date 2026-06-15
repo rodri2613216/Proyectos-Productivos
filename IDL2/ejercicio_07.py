@@ -1,62 +1,45 @@
 """
-Ejercicio 07 - Porcentajes respecto a un numero X
-===================================================
+Ejercicio 07 - Ordenar tres enteros diferentes
+===============================================
 Objetivo:
-    Leer N numeros y un valor X, y contar de forma INDEPENDIENTE varias
-    condiciones, expresando cada una como porcentaje del total.
+    Combinar una VALIDACION (los tres numeros deben ser distintos) con una
+    decision que elige el sentido del ordenamiento (ascendente/descendente).
 
-Nivel: Intermedio-Avanzado (multiples condiciones + porcentajes)
-
-Nota:
-    Las condiciones "menor / mayor / igual" a X ya cubren todos los casos,
-    por lo que "no cumple ninguna" normalmente resulta 0%.
+Nivel: Intermedio-Avanzado (validacion + seleccion de orden)
 
 Ejemplo de uso:
-    Entrada: N = 5, X = 10, numeros = 5, 10, 15, 8, 10
-    Salida : Menores 40%, Mayores 20%, Iguales 40%, Entre 1 y X 80%, Ninguna 0%
+    Entrada: 5, 2, 8  y orden 'a'
+    Salida : Orden ascendente: [2, 5, 8]
 """
 
 
-def contar_condiciones(numeros, x):
-    """Devuelve un diccionario con la cantidad de numeros que cumple cada condicion."""
-    contadores = {"menores": 0, "mayores": 0, "iguales": 0, "entre": 0, "ninguna": 0}
+def todos_diferentes(numeros):
+    """True si todos los elementos de la lista son distintos entre si."""
+    return len(set(numeros)) == len(numeros)
 
-    for numero in numeros:
-        es_menor = numero < x
-        es_mayor = numero > x
-        es_igual = numero == x
-        esta_entre = 1 <= numero <= x
 
-        if es_menor:
-            contadores["menores"] += 1
-        if es_mayor:
-            contadores["mayores"] += 1
-        if es_igual:
-            contadores["iguales"] += 1
-        if esta_entre:
-            contadores["entre"] += 1
-        if not (es_menor or es_mayor or es_igual or esta_entre):
-            contadores["ninguna"] += 1
-
-    return contadores
+def ordenar(numeros, ascendente=True):
+    """Devuelve una nueva lista ordenada en el sentido indicado."""
+    return sorted(numeros, reverse=not ascendente)
 
 
 def main():
-    cantidad = int(input("Cuantos numeros ingresara (N): "))
-    x = float(input("Ingrese el numero X: "))
+    a = int(input("Numero entero 1: "))
+    b = int(input("Numero entero 2: "))
+    c = int(input("Numero entero 3: "))
+    numeros = [a, b, c]
 
-    numeros = []
-    for indice in range(1, cantidad + 1):
-        numeros.append(float(input(f"Numero {indice}: ")))
+    if not todos_diferentes(numeros):
+        print("ERROR: los tres numeros deben ser diferentes entre si.")
+        return
 
-    contadores = contar_condiciones(numeros, x)
-    total = len(numeros)
-
-    print(f"Menores que X:     {contadores['menores'] / total * 100:.2f}%")
-    print(f"Mayores que X:     {contadores['mayores'] / total * 100:.2f}%")
-    print(f"Iguales a X:       {contadores['iguales'] / total * 100:.2f}%")
-    print(f"Entre 1 y X:       {contadores['entre'] / total * 100:.2f}%")
-    print(f"No cumple ninguna: {contadores['ninguna'] / total * 100:.2f}%")
+    orden = input("Orden ascendente (a) o descendente (d): ").strip().lower()
+    if orden == "a":
+        print("Orden ascendente:", ordenar(numeros, ascendente=True))
+    elif orden == "d":
+        print("Orden descendente:", ordenar(numeros, ascendente=False))
+    else:
+        print("Opcion no valida (use 'a' o 'd').")
 
 
 if __name__ == "__main__":

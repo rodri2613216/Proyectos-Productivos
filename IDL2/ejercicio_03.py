@@ -1,41 +1,42 @@
 """
-Ejercicio 03 - Factorial de dos numeros y prefijo comun
-========================================================
+Ejercicio 03 - Mayor y menor de tres numeros
+=============================================
 Objetivo:
-    Calcular el factorial con un bucle (acumulador de producto) y comparar
-    dos factoriales: como ambos comparten el inicio 1x2x3..., son iguales
-    hasta el multiplo minimo(a, b).
+    Practicar la comparacion con condicionales para hallar el mayor y el
+    menor sin usar las funciones max()/min() (se hace 'a mano').
 
-Nivel: Basico-Intermedio (acumulador + logica de comparacion)
+Nivel: Basico-Intermedio (logica de comparacion)
 
 Ejemplo de uso:
-    Entrada: 7 y 10
-    Salida : 7!  = 1x2x3x4x5x6x7 = 5040
-             10! = 1x2x...x10 = 3628800
-             >> Son iguales hasta el multiplo 7
+    Entrada: 5, 9, 2
+    Salida : Mayor: 9.0 | Menor: 2.0
 """
 
 
-def factorial(n):
-    """Factorial de n calculado con un bucle."""
-    resultado = 1
-    for i in range(1, n + 1):
-        resultado *= i
-    return resultado
+def mayor_y_menor(a, b, c):
+    """Devuelve (mayor, menor) de tres valores usando comparaciones."""
+    mayor = a
+    if b > mayor:
+        mayor = b
+    if c > mayor:
+        mayor = c
 
+    menor = a
+    if b < menor:
+        menor = b
+    if c < menor:
+        menor = c
 
-def expansion(n):
-    """Cadena de la forma '1x2x3x...xn'."""
-    return "x".join(str(i) for i in range(1, n + 1))
+    return mayor, menor
 
 
 def main():
-    a = int(input("Primer numero: "))
-    b = int(input("Segundo numero: "))
+    a = float(input("Numero 1: "))
+    b = float(input("Numero 2: "))
+    c = float(input("Numero 3: "))
 
-    print(f"{a}! = {expansion(a)} = {factorial(a)}")
-    print(f"{b}! = {expansion(b)} = {factorial(b)}")
-    print(f">> Son iguales hasta el multiplo {min(a, b)}")
+    mayor, menor = mayor_y_menor(a, b, c)
+    print(f"Mayor: {mayor} | Menor: {menor}")
 
 
 if __name__ == "__main__":

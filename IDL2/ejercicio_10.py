@@ -1,75 +1,56 @@
 """
-Ejercicio 10 - Notas de N estudiantes (validacion + estadisticas)
-==================================================================
+Ejercicio 10 - Clasificacion de un triangulo
+=============================================
 Objetivo:
-    Ejercicio integrador. Valida N (entre 5 y 20) y cada nota (entre 0 y
-    20) mediante bucles de validacion, y calcula 11 estadisticas del
-    salon. Reutiliza una funcion generica de lectura validada.
+    Ejercicio integrador: validar primero que los lados formen un triangulo
+    (desigualdad triangular), clasificarlo con condiciones anidadas y, segun
+    el tipo, mostrar perimetro, los lados iguales o el area (formula de Heron).
 
-Nivel: Avanzado (validacion robusta + agregacion de resultados)
+Nivel: Avanzado (validacion + clasificacion anidada + formulas)
 
-Ejemplo de uso:
-    Entrada: N = 5 -> notas 20, 13, 12, 20, 8
-    Salida : mayor 20, menor 8, prom 14.60, aprobados 3 (60%), etc.
+Ejemplos de uso:
+    3, 3, 3 -> Equilatero | Perimetro: 9.0
+    5, 5, 8 -> Isosceles  | Lados iguales: a y b
+    3, 4, 5 -> Escaleno   | Area: 6.00
 """
 
-NOTA_APROBATORIA = 13
+import math
 
 
-def leer_entero_en_rango(mensaje, minimo, maximo):
-    """Lee un entero y repite la pregunta hasta que este dentro de [minimo, maximo]."""
-    while True:
-        valor = int(input(mensaje))
-        if minimo <= valor <= maximo:
-            return valor
-        print(f"  El valor debe estar entre {minimo} y {maximo}.")
+def es_triangulo_valido(a, b, c):
+    """True si los tres lados cumplen la desigualdad triangular."""
+    return a + b > c and a + c > b and b + c > a
 
 
-def calcular_estadisticas(notas):
-    """Devuelve un diccionario con las 11 estadisticas solicitadas (a-k)."""
-    total = len(notas)
-    mayor = max(notas)
-    menor = min(notas)
-    aprobados = sum(1 for nota in notas if nota >= NOTA_APROBATORIA)
-    pares = sum(1 for nota in notas if nota % 2 == 0)
-
-    return {
-        "mayor": mayor,
-        "menor": menor,
-        "cant_mayor": notas.count(mayor),
-        "cant_menor": notas.count(menor),
-        "promedio": sum(notas) / total,
-        "pares": pares,
-        "impares": total - pares,
-        "aprobados": aprobados,
-        "desaprobados": total - aprobados,
-        "porc_aprob": aprobados / total * 100,
-        "porc_desap": (total - aprobados) / total * 100,
-    }
+def area_heron(a, b, c):
+    """Area de un triangulo a partir de sus tres lados (formula de Heron)."""
+    s = (a + b + c) / 2     # semiperimetro
+    return math.sqrt(s * (s - a) * (s - b) * (s - c))
 
 
 def main():
-    cantidad = leer_entero_en_rango("Cantidad de estudiantes (5 a 20): ", 5, 20)
+    a = float(input("Lado a: "))
+    b = float(input("Lado b: "))
+    c = float(input("Lado c: "))
 
-    notas = []
-    for indice in range(1, cantidad + 1):
-        nota = leer_entero_en_rango(f"Nota del estudiante {indice} (0-20): ", 0, 20)
-        notas.append(nota)
+    if not es_triangulo_valido(a, b, c):
+        print("Los lados ingresados NO forman un triangulo valido.")
+        return
 
-    est = calcular_estadisticas(notas)
-
-    print("\n----- RESULTADOS -----")
-    print(f"a) Mayor nota: {est['mayor']}")
-    print(f"b) Menor nota: {est['menor']}")
-    print(f"c) Alumnos con la mayor nota: {est['cant_mayor']}")
-    print(f"d) Alumnos con la menor nota: {est['cant_menor']}")
-    print(f"e) Promedio del salon: {est['promedio']:.2f}")
-    print(f"f) Notas pares: {est['pares']}")
-    print(f"g) Notas impares: {est['impares']}")
-    print(f"h) Aprobados: {est['aprobados']}")
-    print(f"i) Desaprobados: {est['desaprobados']}")
-    print(f"j) Porcentaje aprobados: {est['porc_aprob']:.2f}%")
-    print(f"k) Porcentaje desaprobados: {est['porc_desap']:.2f}%")
+    if a == b == c:
+        print("Triangulo EQUILATERO")
+        print(f"Perimetro: {a + b + c}")
+    elif a == b or b == c or a == c:
+        print("Triangulo ISOSCELES")
+        if a == b:
+            print("Lados iguales: a y b")
+        elif b == c:
+            print("Lados iguales: b y c")
+        else:
+            print("Lados iguales: a y c")
+    else:
+        print("Triangulo ESCALENO")
+        print(f"Area: {area_heron(a, b, c):.2f}")
 
 
 if __name__ == "__main__":

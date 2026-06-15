@@ -1,55 +1,51 @@
 """
-Ejercicio 08 - Asistentes a una fiesta
-=======================================
+Ejercicio 08 - Costo de llamadas internacionales por zona
+==========================================================
 Objetivo:
-    Usar un bucle INDEFINIDO (no se sabe cuantas personas habra): se
-    registra al menos una persona y, tras cada registro, se pregunta si
-    se desea ingresar otra. Se mantienen acumuladores por sexo, promedios
-    y las edades minima y maxima.
+    Usar un DICCIONARIO como tabla de datos (clave -> zona y costo) y
+    validar que la clave ingresada exista antes de calcular.
 
-Nivel: Avanzado (bucle controlado por el usuario + multiples acumuladores)
+Nivel: Avanzado (estructura de datos tipo diccionario + busqueda)
 
+Tabla:
+    10 America del Norte (2.2)   12 America del Centro (2.5)
+    20 America del Sur   (1.2)   22 Asia              (3.5)
+    30 Europa            (3.0)   32 Africa            (3.2)
 Ejemplo de uso:
-    Entrada: (25, M), (30, F), (20, M) y luego 'n' para terminar
-    Salida : Total 3 | Hombres 2, Mujeres 1 | Promedios por sexo | edad min/max
+    Entrada: clave = 20, minutos = 10
+    Salida : Zona America del Sur | Costo total: S/12.00
 """
+
+# clave -> (nombre de la zona, costo por minuto)
+ZONAS = {
+    10: ("America del Norte", 2.2),
+    12: ("America del Centro", 2.5),
+    20: ("America del Sur", 1.2),
+    22: ("Asia", 3.5),
+    30: ("Europa", 3.0),
+    32: ("Africa", 3.2),
+}
+
+
+def costo_llamada(clave, minutos):
+    """Devuelve (nombre_zona, costo_total) o None si la clave no existe."""
+    if clave not in ZONAS:
+        return None
+    nombre, costo_por_minuto = ZONAS[clave]
+    return nombre, minutos * costo_por_minuto
 
 
 def main():
-    total = 0
-    hombres = mujeres = 0
-    suma_edad_h = suma_edad_m = 0
-    edad_min = edad_max = None
+    clave = int(input("Clave de la zona geografica: "))
+    minutos = int(input("Minutos hablados: "))
 
-    continuar = "s"
-    while continuar == "s":                  # se ejecuta al menos una vez
-        edad = int(input("Edad de la persona: "))
-        sexo = input("Sexo (M=masculino / F=femenino): ").strip().upper()
-
-        total += 1
-        if sexo == "M":
-            hombres += 1
-            suma_edad_h += edad
-        elif sexo == "F":
-            mujeres += 1
-            suma_edad_m += edad
-
-        # Actualizacion de edades extremas
-        if edad_min is None or edad < edad_min:
-            edad_min = edad
-        if edad_max is None or edad > edad_max:
-            edad_max = edad
-
-        continuar = input("Desea registrar a otra persona? (s/n): ").strip().lower()
-
-    promedio_h = suma_edad_h / hombres if hombres > 0 else 0
-    promedio_m = suma_edad_m / mujeres if mujeres > 0 else 0
-
-    print(f"\nTotal de asistentes: {total}")
-    print(f"Hombres: {hombres} | Mujeres: {mujeres}")
-    print(f"Promedio de edad (hombres): {promedio_h:.2f}")
-    print(f"Promedio de edad (mujeres): {promedio_m:.2f}")
-    print(f"Edad menor: {edad_min} | Edad mayor: {edad_max}")
+    resultado = costo_llamada(clave, minutos)
+    if resultado is None:
+        print("Clave de zona no valida.")
+    else:
+        nombre, total = resultado
+        print(f"Zona: {nombre}")
+        print(f"Costo total de la llamada: S/{total:.2f}")
 
 
 if __name__ == "__main__":

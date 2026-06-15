@@ -1,39 +1,44 @@
 """
-Ejercicio 05 - Maximo y minimo de N numeros
-============================================
+Ejercicio 05 - Colegiatura con descuento por promedio
+======================================================
 Objetivo:
-    Leer N numeros y determinar simultaneamente el maximo y el minimo,
-    inicializando ambos con el PRIMER valor leido y actualizandolos en
-    un unico recorrido.
+    Decision if/else en la que UNA de las ramas realiza un calculo
+    adicional (el descuento de beca) y la otra no.
 
-Nivel: Intermedio (seguimiento de valores extremos)
+Nivel: Intermedio (rama con calculo condicional)
 
+Reglas: cada materia cuesta S/100. Si el promedio >= 18 se aplica 50% de
+        descuento sobre la mitad de los cursos; si es < 18 se paga todo.
 Ejemplo de uso:
-    Entrada: 5 numeros -> 7, 2, 9, 4, 1
-    Salida : Maximo: 9.0 | Minimo: 1.0
+    Entrada: 8 materias, promedio 18
+    Salida : Colegiatura S/800.00, descuento S/200.00, a pagar S/600.00
 """
 
+COSTO_MATERIA = 100
+PROMEDIO_BECA = 18
 
-def maximo_minimo(numeros):
-    """Devuelve (maximo, minimo) recorriendo la lista una sola vez."""
-    maximo = minimo = numeros[0]      # se inicializan con el primer numero
-    for numero in numeros[1:]:
-        if numero > maximo:
-            maximo = numero
-        if numero < minimo:
-            minimo = numero
-    return maximo, minimo
+
+def calcular_pago(materias, promedio):
+    """Devuelve (pago_final, descuento, costo_total)."""
+    costo_total = materias * COSTO_MATERIA
+
+    if promedio >= PROMEDIO_BECA:
+        # 50% de descuento aplicado solo a la mitad de los cursos
+        descuento = (materias / 2 * COSTO_MATERIA) * 0.50
+        return costo_total - descuento, descuento, costo_total
+
+    return costo_total, 0, costo_total
 
 
 def main():
-    cantidad = int(input("Cuantos numeros ingresara: "))
+    materias = int(input("Numero de materias: "))
+    promedio = float(input("Promedio del ultimo periodo: "))
 
-    numeros = []
-    for indice in range(1, cantidad + 1):
-        numeros.append(float(input(f"Numero {indice}: ")))
+    pago, descuento, costo_total = calcular_pago(materias, promedio)
 
-    maximo, minimo = maximo_minimo(numeros)
-    print(f"Maximo: {maximo} | Minimo: {minimo}")
+    print(f"Colegiatura completa: S/{costo_total:.2f}")
+    print(f"Descuento aplicado:   S/{descuento:.2f}")
+    print(f"Total a pagar:        S/{pago:.2f}")
 
 
 if __name__ == "__main__":

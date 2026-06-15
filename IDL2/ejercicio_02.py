@@ -1,39 +1,38 @@
 """
-Ejercicio 02 - Producto con arrays (100 x 98 x 96 x ... x 2)
-============================================================
+Ejercicio 02 - Tributacion de impuestos
+========================================
 Objetivo:
-    Construir una lista (array) con range() usando un paso, y recorrerla
-    acumulando un PRODUCTO. No requiere datos del usuario.
+    Introducir la condicion COMPUESTA con el operador logico 'and': se
+    deben cumplir dos requisitos a la vez para tributar.
 
-Nivel: Basico (listas + acumulador de producto)
+Nivel: Basico (condicion con 'and' + calculo de porcentaje)
 
-Nota:
-    El enunciado termina en "x 1"; como la secuencia baja de 2 en 2 desde
-    100, llega hasta 2, y multiplicar por 1 no altera el resultado.
-
+Reglas: tributa quien sea mayor de 18 años Y tenga ingresos >= S/3000.
+        El monto a tributar es el 5% del ingreso mensual.
 Ejemplo de uso:
-    Salida: Array: [100, 98, 96, ..., 4, 2]
-            Producto total: (numero muy grande)
+    Entrada: edad = 25, ingresos = 4000
+    Salida : Debe tributar. Monto: S/200.00
 """
 
+EDAD_MINIMA = 18
+INGRESO_MINIMO = 3000
+TASA_IMPUESTO = 0.05
 
-def construir_secuencia(inicio=100, paso=2):
-    """Lista descendente desde 'inicio' hasta el menor positivo, de 'paso' en 'paso'."""
-    return list(range(inicio, 0, -paso))
 
-
-def producto_lista(numeros):
-    """Devuelve el producto de todos los elementos de la lista."""
-    resultado = 1
-    for numero in numeros:
-        resultado *= numero
-    return resultado
+def debe_tributar(edad, ingresos):
+    """True si cumple ambos requisitos (mayor de 18 e ingresos suficientes)."""
+    return edad > EDAD_MINIMA and ingresos >= INGRESO_MINIMO
 
 
 def main():
-    numeros = construir_secuencia()
-    print("Array:", numeros)
-    print("Producto total:", producto_lista(numeros))
+    edad = int(input("Edad: "))
+    ingresos = float(input("Ingresos mensuales (S/): "))
+
+    if debe_tributar(edad, ingresos):
+        monto = ingresos * TASA_IMPUESTO
+        print(f"Debe tributar. Monto (5%): S/{monto:.2f}")
+    else:
+        print("No debe tributar.")
 
 
 if __name__ == "__main__":
